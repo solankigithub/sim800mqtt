@@ -29,15 +29,20 @@ class MQTT
         const char MQTTLVL = 0x03;
         const char MQTTFlags = 0xC2;
         const unsigned int MQTTKeepAlive = 60;
-
+        
         const char MQTTQOS = 0x00;        
         SIM8000 sim800; 
         uint8_t packetType=0;
+        bool _isConnected=false;
         
-    public:   
-        MQTT(SIM8000 sim800);     
+    public:          
+        Stream *OUT;
+        MQTT();
+        MQTT(Stream &out);
+        bool initialize();
+        bool isConnected();
         bool connect(const char* MQTTClientID, const char* MQTTUsername, const char* MQTTPassword);
-        bool publish(char* MQTTTopic, char* MQTTMessage);
+        bool publish(char* MQTTTopic, char* MQTTMessage, uint8_t qos);
         bool subscribe(char* MQTTTopic);
         bool MQTT::ping();
         void loop();
